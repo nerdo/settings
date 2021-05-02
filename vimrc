@@ -1,3 +1,6 @@
+" Settings needed for plugins to load as expected...
+let g:ale_completion_enabled = 1
+
 " =======
 " PLUGINS
 " =======
@@ -16,9 +19,17 @@ Plug 'airblade/vim-gitgutter'
 Plug 'thaerkh/vim-workspace'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'vim-syntastic/syntastic'
+Plug 'dense-analysis/ale'
 Plug 'morhetz/gruvbox'
 Plug 'prettier/vim-prettier', { 'do': 'npm install' },
+
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins | !pip install msgpack' }
+else
+  Plug 'Shougo/deoplete.nvim', { 'do': 'pip install msgpack' }
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -33,9 +44,21 @@ call plug#end()
 set background=dark
 let g:gruvbox_italic=1
 color gruvbox
+set cul
 
 set number
 let mapleader = ","
+
+" cursor change for insert mode
+" https://stackoverflow.com/a/42118416/2057996
+let &t_SI = "\e[3 q"
+let &t_EI = "\e[2 q"
+
+" reset the cursor on start (for older versions of vim, usually not required)
+augroup myCmds
+au!
+autocmd VimEnter * silent !echo -ne "\e[2 q"
+augroup END
 
 " Show tab line when there is only one file open
 set showtabline=2
@@ -106,15 +129,22 @@ set updatetime=250
 " save all session files to ~/.vim/sessions
 let g:workspace_session_directory = $HOME . '/.vim/sessions/'
 
-" syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" Set this. Airline will handle the rest.
+let g:airline#extensions#ale#enabled = 1
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+" ALE
+let g:ale_sign_column_always = 1
+let g:ale_sign_error = '!!'
+let g:ale_sign_warning = '##'
+let g:airline#extensions#ale#enabled = 1
+let g:ale_completion_autoimport = 1
+set omnifunc=ale#completion#OmniFunc
+
+" deoplete
+let g:deoplete#enable_at_startup = 1
+call deoplete#custom#option('sources', {
+\ '_': ['ale'],
+\})
 
 " =======
 " KEYMAPS
@@ -124,6 +154,16 @@ let g:syntastic_check_on_wq = 0
 nnoremap <C-t> :tabnew<CR>
 nnoremap t :tabnext<CR>
 nnoremap T :tabprev<CR>
+nnoremap gd :ALEGoToDefinition<CR>
+nnoremap gD :ALEFindReferences<CR>
+" nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+" nmap <silent> <C-j> <Plug>(ale_next_wrap)
+nmap <Leader>E <Plug>(ale_previous_wrap)
+nmap <Leader>e <Plug>(ale_next_wrap)
+nnoremap <C-k><C-i> :ALEHover<CR>
+nnoremap <F2> :ALERename<CR>
+" inoremap <C-Space> <C-x><C-o>
+" inoremap <C-@> <C-Space>
 
 " NERDTree keymaps
 " alt+b
@@ -140,8 +180,8 @@ nnoremap <C-F> :Ag<CR>
 
 " vim-gitgutter
 " Cycle through hunks
-nmap gn :call GitGutterNextHunkCycle()<CR>
-nmap gN :call GitGutterPrevHunkCycle()<CR>
+nmap <Leader>n :call GitGutterNextHunkCycle()<CR>
+nmap <Leader>N :call GitGutterPrevHunkCycle()<CR>
 
 " Hunk-add and hunk-revert for chunk staging
 nmap <Leader>ga <Plug>(GitGutterStageHunk)

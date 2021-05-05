@@ -19,17 +19,27 @@ Plug 'airblade/vim-gitgutter'
 Plug 'thaerkh/vim-workspace'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'dense-analysis/ale'
 Plug 'morhetz/gruvbox'
-Plug 'prettier/vim-prettier', { 'do': 'npm install' },
+Plug 'prettier/vim-prettier', { 'do': 'npm install' }
+Plug 'easymotion/vim-easymotion'
 
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins | !pip install msgpack' }
-else
-  Plug 'Shougo/deoplete.nvim', { 'do': 'pip install msgpack' }
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc-html', {'for': 'html'}
+Plug 'neoclide/coc-json', {'for': 'json'}
+Plug 'marlonfan/coc-phpls', {'for': 'php'}
+Plug 'neoclide/coc-prettier'
+Plug 'neoclide/coc-python', {'for': 'python'}
+Plug 'neoclide/coc-rls', {'for': 'rust'}
+Plug 'josa42/coc-sh', {'for': 'sh'}
+Plug 'bmatcuk/coc-stylelintplus', {'for': ['css', 'scss', 'sass']}
+Plug 'fannheyward/coc-sql', {'for': 'sql'}
+Plug 'iamcco/coc-svg', {'for': 'svg'}
+Plug 'yegappan/taglist'
+Plug 'kklyama117/coc-toml', {'for': 'toml'}
+Plug 'neoclide/coc-tsserver', {'for': ['typescript', 'javascript']}
+Plug 'iamcco/coc-vimlsp', {'for': 'vim'}
+Plug 'fannheyward/coc-xml', {'for': 'xml'}
+Plug 'neoclide/coc-yaml', {'for': 'yaml'}
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -45,6 +55,9 @@ set background=dark
 let g:gruvbox_italic=1
 color gruvbox
 set cul
+
+" Give more space for displaying messages.
+set cmdheight=2
 
 set number
 let mapleader = ","
@@ -62,6 +75,21 @@ augroup END
 
 " Show tab line when there is only one file open
 set showtabline=2
+
+" Update sign column every quarter second
+set updatetime=250
+
+" Some language servers have issues with backup files, see https://github.com/neoclide/coc.nvim/issues/349.
+set nobackup
+set nowritebackup
+
+" Set internal encoding of vim, not needed on neovim, since coc.nvim using some
+" unicode characters in the file autoload/float.vim
+set encoding=utf-8
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+set signcolumn=yes
 
 " NERDTree
 " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
@@ -97,6 +125,7 @@ let g:gitgutter_sign_modified = '>'
 let g:gitgutter_sign_removed = '-'
 let g:gitgutter_sign_removed_first_line = '^'
 let g:gitgutter_sign_modified_removed = '<'
+let g:gitgutter_diff_args = '-w'
 
 " Cycle through all hunks in the buffer
 function! GitGutterNextHunkCycle()
@@ -122,29 +151,9 @@ let g:gitgutter_override_sign_column_highlight = 1
 highlight SignColumn guibg=bg
 highlight SignColumn ctermbg=bg
 
-" Update sign column every quarter second
-set updatetime=250
-
 " vim-workspace
 " save all session files to ~/.vim/sessions
 let g:workspace_session_directory = $HOME . '/.vim/sessions/'
-
-" Set this. Airline will handle the rest.
-let g:airline#extensions#ale#enabled = 1
-
-" ALE
-let g:ale_sign_column_always = 1
-let g:ale_sign_error = '!!'
-let g:ale_sign_warning = '##'
-let g:airline#extensions#ale#enabled = 1
-let g:ale_completion_autoimport = 1
-set omnifunc=ale#completion#OmniFunc
-
-" deoplete
-let g:deoplete#enable_at_startup = 1
-call deoplete#custom#option('sources', {
-\ '_': ['ale'],
-\})
 
 " =======
 " KEYMAPS
@@ -154,16 +163,63 @@ call deoplete#custom#option('sources', {
 nnoremap <C-t> :tabnew<CR>
 nnoremap t :tabnext<CR>
 nnoremap T :tabprev<CR>
-nnoremap gd :ALEGoToDefinition<CR>
-nnoremap gD :ALEFindReferences<CR>
-" nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-" nmap <silent> <C-j> <Plug>(ale_next_wrap)
-nmap <Leader>E <Plug>(ale_previous_wrap)
-nmap <Leader>e <Plug>(ale_next_wrap)
-nnoremap <C-k><C-i> :ALEHover<CR>
-nnoremap <F2> :ALERename<CR>
-" inoremap <C-Space> <C-x><C-o>
-" inoremap <C-@> <C-Space>
+
+" good concept, not good for me in practice...
+" inoremap " ""<left>
+" inoremap ' ''<left>
+" inoremap ( ()<left>
+" inoremap [ []<left>
+" inoremap { {}<left>
+" inoremap {<CR> {<CR>}<ESC>O
+" inoremap {;<CR> {<CR>};<ESC>O
+
+" coc
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gD <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
 
 " NERDTree keymaps
 " alt+b

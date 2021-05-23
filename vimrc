@@ -1,6 +1,3 @@
-" Settings needed for plugins to load as expected...
-let g:ale_completion_enabled = 1
-
 " =======
 " PLUGINS
 " =======
@@ -20,30 +17,12 @@ Plug 'thaerkh/vim-workspace'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'morhetz/gruvbox'
-Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 Plug 'easymotion/vim-easymotion'
-
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'neoclide/coc-html', {'for': 'html'}
-Plug 'neoclide/coc-json', {'for': 'json'}
-Plug 'marlonfan/coc-phpls', {'for': 'php'}
-Plug 'neoclide/coc-prettier'
-Plug 'neoclide/coc-python', {'for': 'python'}
-Plug 'neoclide/coc-rls', {'for': 'rust'}
-Plug 'josa42/coc-sh', {'for': 'sh'}
-Plug 'bmatcuk/coc-stylelintplus', {'for': ['css', 'scss', 'sass']}
-Plug 'fannheyward/coc-sql', {'for': 'sql'}
-Plug 'iamcco/coc-svg', {'for': 'svg'}
-Plug 'yegappan/taglist'
-Plug 'kklyama117/coc-toml', {'for': 'toml'}
-Plug 'neoclide/coc-tsserver', {'for': ['typescript', 'javascript']}
-Plug 'iamcco/coc-vimlsp', {'for': 'vim'}
-Plug 'fannheyward/coc-xml', {'for': 'xml'}
-Plug 'neoclide/coc-yaml', {'for': 'yaml'}
+Plug 'ryanoasis/vim-devicons'
+Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': ':CocInstall coc-html coc-json coc-phpls coc-prettier coc-python coc-rls coc-sh coc-sql coc-stylelintplus coc-svg coc-toml coc-tsserver coc-vimlsp coc-xml coc-yaml coc-pairs'}
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
-
 
 " ========
 " SETTINGS
@@ -55,6 +34,19 @@ set background=dark
 let g:gruvbox_italic=1
 color gruvbox
 set cul
+set guifont=Dank\ Mono:h18
+
+" https://stackoverflow.com/a/1878984/2057996
+set tabstop=2       " The width of a TAB is set to 2.
+                    " Still it is a \t. It is just that
+                    " Vim will interpret it to be having
+                    " a width of 2.
+
+set shiftwidth=2    " Indents will have a width of 2
+
+set softtabstop=2   " Sets the number of columns for a TAB
+
+set expandtab       " Expand TABs to spaces
 
 " Give more space for displaying messages.
 set cmdheight=2
@@ -90,6 +82,14 @@ set encoding=utf-8
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
 set signcolumn=yes
+
+" coc prettier
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+nnoremap <C-S-i> :Prettier<CR>
+
+" neovide
+let g:neovide_transparency = 0.97
+let g:neovide_cursor_vfx_mode = "pixiedust"
 
 " NERDTree
 " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
@@ -195,6 +195,16 @@ else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
@@ -218,16 +228,20 @@ endfunction
 nmap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+xmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>f <Plug>(coc-format-selected)
 
 " NERDTree keymaps
 " alt+b
+" first binding is a terminal hack...
 nnoremap <Esc>b :NERDTreeToggle<CR>
+nnoremap <M-b> :NERDTreeToggle<CR>
 
 " NERDcommenter keymaps
 " ctrl+/
+" first binding is a terminal hack...
 map <C-_> <plug>NERDCommenterToggle
+map <C-/> <plug>NERDCommenterToggle
 
 " FZF
 " ctrl+p

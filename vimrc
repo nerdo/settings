@@ -19,7 +19,8 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'morhetz/gruvbox'
 Plug 'easymotion/vim-easymotion'
 Plug 'ryanoasis/vim-devicons'
-Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': ':CocInstall coc-html coc-json coc-phpls coc-prettier coc-python coc-rls coc-sh coc-sql coc-stylelintplus coc-svg coc-toml coc-tsserver coc-vimlsp coc-xml coc-yaml coc-pairs'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'bkad/CamelCaseMotion'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -30,6 +31,7 @@ call plug#end()
 
 " vim
 " set termguicolors
+set encoding=UTF-8
 set background=dark
 let g:gruvbox_italic=1
 color gruvbox
@@ -82,6 +84,26 @@ set encoding=utf-8
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
 set signcolumn=yes
+
+" CoC
+let g:coc_global_extensions = [
+  \ 'coc-html',
+  \ 'coc-json',
+  \ 'coc-phpls',
+  \ 'coc-prettier',
+  \ 'coc-python',
+  \ 'coc-rls',
+  \ 'coc-sh',
+  \ 'coc-sql',
+  \ 'coc-stylelintplus',
+  \ 'coc-svg',
+  \ 'coc-toml',
+  \ 'coc-tsserver',
+  \ 'coc-vimlsp',
+  \ 'coc-xml',
+  \ 'coc-yaml', 
+  \ 'coc-pairs'
+  \ ]
 
 " coc prettier
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
@@ -226,6 +248,7 @@ endfunction
 
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
+nmap <F2> <Plug>(coc-rename)
 
 " Formatting selected code.
 xmap <leader>f <Plug>(coc-format-selected)
@@ -246,7 +269,7 @@ map <C-/> <plug>NERDCommenterToggle
 " FZF
 " ctrl+p
 nnoremap <C-p> :FZF<CR>
-nnoremap <C-F> :Ag<CR>
+nnoremap <C-S-f> :Ag<CR>
 
 " vim-gitgutter
 " Cycle through hunks
@@ -260,3 +283,5 @@ nmap <Leader>gu <Plug>(GitGutterUndoHunk)
 " vim-workspace
 nnoremap <leader>s :ToggleWorkspace<CR>
 
+" CamelCaseMotion
+let g:camelcasemotion_key = '<leader>'

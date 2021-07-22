@@ -36,8 +36,9 @@ set background=dark
 let g:gruvbox_italic=1
 color gruvbox
 set cul
-"set guifont=Dank\ Mono:h18
-set guifont=FiraCode\ Nerd\ Font\ Mono:h18
+set guifont=Dank\ Mono,DejaVu\ Sans\ Mono,Iosevka,PowerlineSymbols:h18
+" set guifont=FiraCode\ Nerd\ Font\ Mono,DejaVu\ Sans\ Mono,Iosevka,PowerlineSymbols:h18
+" set guifont=JetBrains\ Mono\ Nerd\ Font,DejaVu\ Sans\ Mono,Iosevka,PowerlineSymbols:h18
 
 " https://stackoverflow.com/a/1878984/2057996
 set tabstop=2       " The width of a TAB is set to 2.
@@ -85,6 +86,9 @@ set encoding=utf-8
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
 set signcolumn=yes
+
+" airline
+let g:airline_powerline_fonts = 1
 
 " CoC
 let g:coc_global_extensions = [

@@ -8,7 +8,7 @@ call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
-Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'preservim/nerdtree'
 Plug 'preservim/nerdcommenter'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -36,7 +36,8 @@ set background=dark
 let g:gruvbox_italic=1
 color gruvbox
 set cul
-set guifont=Dank\ Mono:h18
+"set guifont=Dank\ Mono:h18
+set guifont=FiraCode\ Nerd\ Font\ Mono:h18
 
 " https://stackoverflow.com/a/1878984/2057996
 set tabstop=2       " The width of a TAB is set to 2.
@@ -105,8 +106,12 @@ let g:coc_global_extensions = [
   \ 'coc-pairs'
   \ ]
 
-" coc prettier
+" coc formatting
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
+command! -nargs=0 Format :call CocAction('format')
+autocmd FileType php nnoremap <C-I> :Format<CR>
+autocmd FileType php nnoremap <C-S-i> :Format<CR>
+nnoremap <C-I> :Prettier<CR>
 nnoremap <C-S-i> :Prettier<CR>
 
 " neovide
@@ -114,12 +119,21 @@ let g:neovide_transparency = 0.97
 let g:neovide_cursor_vfx_mode = "pixiedust"
 
 " NERDTree
+" Quit NERDTree after opening a file https://stackoverflow.com/a/14761218
+let NERDTreeQuitOnOpen=1
+
+" Map open in new tab to <C-t>
+let NERDTreeMapOpenInTab='<C-t>'
+
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
 " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
 autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 " Open the existing NERDTree on each new tab.
-" autocmd BufWinEnter * silent NERDTreeMirror
+autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 
 " NERDcommenter
 " Create default mappings
@@ -259,6 +273,10 @@ nmap <leader>f <Plug>(coc-format-selected)
 " first binding is a terminal hack...
 nnoremap <Esc>b :NERDTreeToggle<CR>
 nnoremap <M-b> :NERDTreeToggle<CR>
+nnoremap <Esc>B :NERDTreeFind<CR>
+nnoremap <M-B> :NERDTreeFind<CR>
+" nnoremap <expr> <Esc>b g:NERDTree.IsOpen() ? ":NERDTreeClose<CR>" : bufname('%') ? ":NERDTreeFind<CR>" : ":NERDTree<CR>"
+" nnoremap <expr> <M-b> g:NERDTree.IsOpen() ? ":NERDTreeClose<CR>" : bufname('%') ? ":NERDTreeFind<CR>" : ":NERDTree<CR>"
 
 " NERDcommenter keymaps
 " ctrl+/
@@ -269,6 +287,7 @@ map <C-/> <plug>NERDCommenterToggle
 " FZF
 " ctrl+p
 nnoremap <C-p> :FZF<CR>
+nnoremap <C-F> :Ag<CR>
 nnoremap <C-S-f> :Ag<CR>
 
 " vim-gitgutter

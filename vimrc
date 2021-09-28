@@ -113,6 +113,8 @@ command! -nargs=0 Prettier :CocCommand prettier.formatFile
 command! -nargs=0 Format :call CocAction('format')
 autocmd FileType php nnoremap <C-I> :Format<CR>
 autocmd FileType php nnoremap <C-S-i> :Format<CR>
+autocmd FileType rust nnoremap <C-I> :!cargo fmt<CR>
+autocmd FileType rust nnoremap <C-S-i> :!cargo fmt<CR>
 nnoremap <C-I> :Prettier<CR>
 nnoremap <C-S-i> :Prettier<CR>
 
@@ -135,7 +137,7 @@ autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_
     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 " Open the existing NERDTree on each new tab.
-autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+" autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 
 " NERDcommenter
 " Create default mappings

@@ -7,6 +7,9 @@ return {
   font = wezterm.font("Dank Mono"),
   color_scheme = "Brogrammer",
   keys = {
-    {key="v", mods="CTRL|SHIFT", action=wezterm.action{PasteFrom="Clipboard"}}
+    {key="v", mods="CTRL|SHIFT", action=wezterm.action{PasteFrom="Clipboard"}},
+    {key="=", mods="CTRL", action="IncreaseFontSize"},
+    {key="-", mods="CTRL", action="DecreaseFontSize"},
+    {key="0", mods="CTRL", action="ResetFontSize"},
   }
 }

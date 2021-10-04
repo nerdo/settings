@@ -6,4 +6,7 @@ return {
   text_background_opacity = 0.95,
   font = wezterm.font("Dank Mono"),
   color_scheme = "Brogrammer",
+  keys = {
+    {key="v", mods="CTRL|SHIFT", action=wezterm.action{PasteFrom="Clipboard"}}
+  }
 }

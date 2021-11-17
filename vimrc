@@ -290,9 +290,9 @@ map <C-/> <plug>NERDCommenterToggle
 
 " FZF
 " ctrl+p
-nnoremap <C-p> :FZF<CR>
-nnoremap <C-F> :Ag<CR>
-nnoremap <C-S-f> :Ag<CR>
+nnoremap <C-p> :NERDTreeClose<CR>:FZF<CR>
+nnoremap <C-F> :NERDTreeClose<CR>:Ag<CR>
+nnoremap <C-S-f> :NERDTreeClose<CR>:Ag<CR>
 
 " vim-gitgutter
 " Cycle through hunks

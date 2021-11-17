@@ -303,6 +303,9 @@ nmap <Leader>N :call GitGutterPrevHunkCycle()<CR>
 nmap <Leader>ga <Plug>(GitGutterStageHunk)
 nmap <Leader>gu <Plug>(GitGutterUndoHunk)
 
+" Hunk preview
+nmap <silent> <Leader><space> :GitGutterPreviewHunk<CR>
+
 " vim-workspace
 nnoremap <leader>s :ToggleWorkspace<CR>
 

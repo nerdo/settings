@@ -307,4 +307,4 @@ nmap <Leader>gu <Plug>(GitGutterUndoHunk)
 nnoremap <leader>s :ToggleWorkspace<CR>
 
 " CamelCaseMotion
-let g:camelcasemotion_key = '<leader>'
+let g:camelcasemotion_key = ';'

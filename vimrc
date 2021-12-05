@@ -21,6 +21,9 @@ Plug 'easymotion/vim-easymotion'
 Plug 'ryanoasis/vim-devicons'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'bkad/CamelCaseMotion'
+if has('nvim')
+  Plug 'github/copilot.vim'
+endif
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()

@@ -17,6 +17,7 @@ return {
     {key="c", mods="CMD", action="Copy"},
     {key="m", mods="CMD", action="Hide"},
     {key="q", mods="CMD", action="QuitApplication"},
+    {key="0", mods="CMD", action="ResetFontSize"},
     {key="=", mods="CMD", action="IncreaseFontSize"},
     {key="-", mods="CMD", action="DecreaseFontSize"},
   }

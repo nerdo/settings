@@ -1,6 +1,7 @@
 local wezterm = require 'wezterm';
 return {
   disable_default_key_bindings = true,
+  adjust_window_size_when_changing_font_size = false,
   enable_tab_bar = false,
   window_background_opacity = 0.9,
   text_background_opacity = 0.95,

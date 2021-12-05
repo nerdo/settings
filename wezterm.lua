@@ -11,5 +11,13 @@ return {
     {key="=", mods="CTRL", action="IncreaseFontSize"},
     {key="-", mods="CTRL", action="DecreaseFontSize"},
     {key="0", mods="CTRL", action="ResetFontSize"},
+
+    -- MacOS keybindings
+    {key="v", mods="CMD", action=wezterm.action{PasteFrom="Clipboard"}},
+    {key="c", mods="CMD", action="Copy"},
+    {key="m", mods="CMD", action="Hide"},
+    {key="q", mods="CMD", action="QuitApplication"},
+    {key="=", mods="CMD", action="IncreaseFontSize"},
+    {key="-", mods="CMD", action="DecreaseFontSize"},
   }
 }

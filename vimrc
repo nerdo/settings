@@ -39,7 +39,7 @@ set background=dark
 let g:gruvbox_italic=1
 color gruvbox
 set cul
-set guifont=Dank\ Mono,DejaVu\ Sans\ Mono,Iosevka,PowerlineSymbols:h18
+set guifont=Dank\ Mono,DejaVu\ Sans\ Mono,Hack\ Nerd\ Font\ Mono,Iosevka,PowerlineSymbols:h18
 
 " https://stackoverflow.com/a/1878984/2057996
 set tabstop=2       " The width of a TAB is set to 2.

@@ -19,7 +19,9 @@ if !exists('g:vscode')
 endif
 Plug 'junegunn/fzf.vim', Cond(!exists('g:vscode'))
 Plug 'airblade/vim-gitgutter', Cond(!exists('g:vscode'))
-Plug 'thaerkh/vim-workspace', Cond(!exists('g:vscode'))
+if !has('win32')
+  Plug 'thaerkh/vim-workspace', Cond(!exists('g:vscode'))
+endif
 Plug 'vim-airline/vim-airline', Cond(!exists('g:vscode'))
 Plug 'vim-airline/vim-airline-themes', Cond(!exists('g:vscode'))
 Plug 'morhetz/gruvbox', Cond(!exists('g:vscode'))

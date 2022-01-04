@@ -1,28 +1,36 @@
 " =======
 " PLUGINS
 " =======
-
 " Plugins will be downloaded under the specified directory.
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 
-Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-sleuth'
-Plug 'preservim/nerdtree'
+function! Cond(Cond, ...)
+  let opts = get(a:000, 0, {})
+  return a:Cond ? opts : extend(opts, { 'on': [], 'for': [] })
+endfunction
+
 Plug 'preservim/nerdcommenter'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'airblade/vim-gitgutter'
-Plug 'thaerkh/vim-workspace'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'morhetz/gruvbox'
-Plug 'easymotion/vim-easymotion'
-Plug 'ryanoasis/vim-devicons'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'bkad/CamelCaseMotion'
+Plug 'tpope/vim-sensible', Cond(!exists('g:vscode'))
+Plug 'tpope/vim-fugitive', Cond(!exists('g:vscode'))
+Plug 'tpope/vim-sleuth', Cond(!exists('g:vscode'))
+Plug 'preservim/nerdtree', Cond(!exists('g:vscode'))
+if !exists('g:vscode')
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+endif
+Plug 'junegunn/fzf.vim', Cond(!exists('g:vscode'))
+Plug 'airblade/vim-gitgutter', Cond(!exists('g:vscode'))
+Plug 'thaerkh/vim-workspace', Cond(!exists('g:vscode'))
+Plug 'vim-airline/vim-airline', Cond(!exists('g:vscode'))
+Plug 'vim-airline/vim-airline-themes', Cond(!exists('g:vscode'))
+Plug 'morhetz/gruvbox', Cond(!exists('g:vscode'))
+Plug 'easymotion/vim-easymotion', Cond(!exists('g:vscode'))
+Plug 'ryanoasis/vim-devicons', Cond(!exists('g:vscode'))
+if !exists('g:vscode')
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+end
+Plug 'bkad/CamelCaseMotion', Cond(!exists('g:vscode'))
 if has('nvim')
-  Plug 'github/copilot.vim'
+  Plug 'github/copilot.vim', Cond(!exists('g:vscode'))
 endif
 
 " List ends here. Plugins become visible to Vim after this call.
@@ -245,14 +253,23 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
 
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> <Leader>E <Plug>(coc-diagnostic-prev)
-nmap <silent> <Leader>e <Plug>(coc-diagnostic-next)
+if exists('g:vscode')
+  nmap <silent> <Leader>e :call VSCodeCall('editor.action.marker.next')<CR>
+  nmap <silent> <Leader>E :call VSCodeCall('editor.action.marker.prev')<CR>
+else
+  nmap <silent> <Leader>e <Plug>(coc-diagnostic-next)
+  nmap <silent> <Leader>E <Plug>(coc-diagnostic-prev)
+endif
 
 " GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gD <Plug>(coc-references)
+if exists('g:vscode')
+  nmap <silent> gd :call VSCodeCall('editor.action.revealDefinition')<CR>
+else
+  nmap <silent> gd <Plug>(coc-definition)
+  nmap <silent> gy <Plug>(coc-type-definition)
+  nmap <silent> gi <Plug>(coc-implementation)
+  nmap <silent> gD <Plug>(coc-references)
+endif
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -299,8 +316,13 @@ nnoremap <C-S-f> :NERDTreeClose<CR>:Ag<CR>
 
 " vim-gitgutter
 " Cycle through hunks
-nmap <Leader>n :call GitGutterNextHunkCycle()<CR>
-nmap <Leader>N :call GitGutterPrevHunkCycle()<CR>
+if exists('g:vscode')
+  nmap <silent> <Leader>n :call VSCodeCall('workbench.action.editor.nextChange')<CR>
+  nmap <silent> <Leader>N :call VSCodeCall('workbench.action.editor.previousChange')<CR>
+else
+  nmap <Leader>n :call GitGutterNextHunkCycle()<CR>
+  nmap <Leader>N :call GitGutterPrevHunkCycle()<CR>
+endif
 
 " Hunk-add and hunk-revert for chunk staging
 nmap <Leader>ga <Plug>(GitGutterStageHunk)

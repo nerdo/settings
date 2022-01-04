@@ -13,13 +13,17 @@ Plug 'preservim/nerdcommenter'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-gitgutter'
-Plug 'thaerkh/vim-workspace'
+if !has('win32')
+  Plug 'thaerkh/vim-workspace'
+endif
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'morhetz/gruvbox'
 Plug 'easymotion/vim-easymotion'
 Plug 'ryanoasis/vim-devicons'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+if !exists('g:vscode')
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+endif
 Plug 'bkad/CamelCaseMotion'
 if has('nvim')
   Plug 'github/copilot.vim'

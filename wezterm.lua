@@ -8,7 +8,10 @@ return {
   font = wezterm.font_with_fallback({
     "Dank Mono",
     "Hack Nerd Font Mono",
+    "PowerlineExtraSymbols",
+    "Noto Color Emoji"
   }),
+  font_size = 14,
   color_scheme = "Brogrammer",
   keys = {
     {key="v", mods="CTRL|SHIFT", action=wezterm.action{PasteFrom="Clipboard"}},

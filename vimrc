@@ -219,6 +219,7 @@ nnoremap t :tabnext<CR>
 nnoremap T :tabprev<CR>
 nnoremap <Leader>t- :split term://zsh<CR>
 nnoremap <Leader>t\| :vsplit term://zsh<CR>
+nnoremap <Leader>T :tabnew term://zsh<CR>
 nnoremap <C-w>- :split<CR>
 nnoremap <C-w>\| :vsplit<CR>
 nnoremap <Leader>h <C-W>10<

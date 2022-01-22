@@ -226,7 +226,7 @@ nnoremap <Leader>h <C-W>10<
 nnoremap <Leader>j <C-W>10+
 nnoremap <Leader>k <C-W>10-
 nnoremap <Leader>l <C-W>10>
-tnoremap <Esc> <C-\><C-n>
+" tnoremap <Esc> <C-\><C-n> " this breaks <Esc> from silver searcher
 
 " good concept, not good for me in practice...
 " inoremap " ""<left>

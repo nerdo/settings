@@ -35,6 +35,7 @@ Plug 'bkad/CamelCaseMotion', Cond(!exists('g:vscode'))
 if has('nvim')
   Plug 'github/copilot.vim', Cond(!exists('g:vscode'))
 endif
+Plug 'mattn/emmet-vim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -353,3 +354,13 @@ let g:camelcasemotion_key = ';'
 " Github Copilot
 imap <silent><script><expr> <C-L> copilot#Accept("\<CR>")
 let g:copilot_no_tab_map = v:true
+
+" Emmet
+let g:user_emmet_settings = {
+\  'typescript.tsx' : {
+\      'extends' : 'jsx',
+\  },
+\  'javascript.jsx' : {
+\      'extends' : 'jsx',
+\  },
+\}

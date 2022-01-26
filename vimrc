@@ -109,7 +109,7 @@ let g:coc_global_extensions = [
   \ 'coc-phpls',
   \ 'coc-prettier',
   \ 'coc-python',
-  \ 'coc-rls',
+  \ 'coc-rust-analyzer',
   \ 'coc-sh',
   \ 'coc-sql',
   \ 'coc-stylelintplus',
@@ -219,7 +219,7 @@ nnoremap t :tabnext<CR>
 nnoremap T :tabprev<CR>
 nnoremap <Leader>t- :split term://zsh<CR>
 nnoremap <Leader>t\| :vsplit term://zsh<CR>
-nnoremap <Leader>T :tabnew term://zsh<CR>
+nnoremap <Leader>T :e term://zsh<CR>
 nnoremap <C-w>- :split<CR>
 nnoremap <C-w>\| :vsplit<CR>
 nnoremap <Leader>h <C-W>10<
@@ -349,3 +349,7 @@ nnoremap <leader>s :ToggleWorkspace<CR>
 
 " CamelCaseMotion
 let g:camelcasemotion_key = ';'
+
+" Github Copilot
+imap <silent><script><expr> <C-L> copilot#Accept("\<CR>")
+let g:copilot_no_tab_map = v:true

@@ -11,7 +11,7 @@ return {
     "PowerlineExtraSymbols",
     "Noto Color Emoji"
   }),
-  font_size = 14,
+  font_size = 16,
   color_scheme = "Brogrammer",
   keys = {
     {key="v", mods="CTRL|SHIFT", action=wezterm.action{PasteFrom="Clipboard"}},
